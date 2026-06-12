@@ -1,0 +1,51 @@
+{% extends 'menu/base.html' %}
+
+{% block title %}{{ title }} | QR Digital Menu{% endblock %}
+
+{% block content %}
+<nav class="admin-navbar">
+    <div class="admin-brand"><i class="fa-solid fa-mug-hot"></i> Shop Admin</div>
+    <div class="admin-nav-links">
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'category_list' %}">Categories</a>
+        <a href="{% url 'item_list' %}" style="font-weight: bold; border-bottom: 2px solid white; padding-bottom: 3px;">Menu Items</a>
+        <a href="{% url 'settings_edit' %}">Settings</a>
+        <a href="{% url 'logout' %}" onclick="return confirm('Do you want to logout now?');" style="color: #ffcccc;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+</nav>
+
+<div class="panel">
+    <div class="panel-header">
+        <h2>{{ title }}</h2>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div class="form-group">
+            {% if field.name == 'is_available' %}
+                <div class="form-check">
+                    {{ field }}
+                    <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                </div>
+            {% else %}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+            {% endif %}
+            
+            {% if field.errors %}
+                <div style="color: #e53e3e; font-size: 0.85rem; margin-top: 5px;">
+                    {{ field.errors|join:", " }}
+                </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <div style="margin-top: 25px; display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-primary">Save Menu Item</button>
+            <a href="{% url 'item_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    # Public route
+    path('', views.menu_public, name='menu_public'),
+    
+    # Auth routes
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    
+    # Admin Dashboard & Settings
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/settings/', views.settings_edit, name='settings_edit'),
+    
+    # Categories CRUD
+    path('dashboard/categories/', views.category_list, name='category_list'),
+    path('dashboard/categories/add/', views.category_add, name='category_add'),
+    path('dashboard/categories/<int:pk>/edit/', views.category_edit, name='category_edit'),
+    path('dashboard/categories/<int:pk>/delete/', views.category_delete, name='category_delete'),
+    
+    # Menu Items CRUD
+    path('dashboard/items/', views.item_list, name='item_list'),
+    path('dashboard/items/add/', views.item_add, name='item_add'),
+    path('dashboard/items/<int:pk>/edit/', views.item_edit, name='item_edit'),
+    path('dashboard/items/<int:pk>/delete/', views.item_delete, name='item_delete'),
+]

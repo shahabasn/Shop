@@ -1,0 +1,33 @@
+{% extends 'menu/base.html' %}
+
+{% block title %}Delete Category | QR Digital Menu{% endblock %}
+
+{% block content %}
+<nav class="admin-navbar">
+    <div class="admin-brand"><i class="fa-solid fa-mug-hot"></i> Shop Admin</div>
+    <div class="admin-nav-links">
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'category_list' %}" style="font-weight: bold; border-bottom: 2px solid white; padding-bottom: 3px;">Categories</a>
+        <a href="{% url 'item_list' %}">Menu Items</a>
+        <a href="{% url 'settings_edit' %}">Settings</a>
+        <a href="{% url 'logout' %}" onclick="return confirm('Do you want to logout now?');" style="color: #ffcccc;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+</nav>
+
+<div class="panel">
+    <h2>Are you sure?</h2>
+    <p style="margin: 20px 0; color: var(--text-muted);">
+        Are you sure you want to delete the category "<strong>{{ category.name }}</strong>"? 
+        <br>
+        <span style="color: #e53e3e; font-weight: 500;">
+            Warning: Deleting this category will also delete all associated menu items!
+        </span>
+    </p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete Category</button>
+        <a href="{% url 'category_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

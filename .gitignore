@@ -1,0 +1,12 @@
+# Django-specific ignore rules
+*.pyc
+*~
+__pycache__/
+db.sqlite3
+media/
+.DS_Store
+.idea/
+.vscode/
+venv/
+env/
+*.log

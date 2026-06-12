@@ -1,0 +1,1 @@
+# management namespace package

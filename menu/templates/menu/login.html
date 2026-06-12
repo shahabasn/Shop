@@ -1,0 +1,39 @@
+{% extends 'menu/base.html' %}
+
+{% block title %}Owner Login | QR Digital Menu{% endblock %}
+
+{% block content %}
+<div class="login-wrapper">
+    <div class="panel" style="margin-top: 50px;">
+        <div class="panel-header" style="justify-content: center;">
+            <h2><i class="fa-solid fa-lock"></i> Staff Login</h2>
+        </div>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div style="color: #e53e3e; font-size: 0.85rem; margin-top: 5px;">
+                        {{ field.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            <div style="margin-top: 25px;">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </div>
+        </form>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'menu_public' %}" style="color: var(--text-muted); text-decoration: none;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Public Menu
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
