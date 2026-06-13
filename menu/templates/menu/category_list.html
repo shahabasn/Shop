@@ -37,9 +37,9 @@
             <tbody>
                 {% for category in categories %}
                 <tr>
-                    <td><strong>{{ category.name }}</strong></td>
-                    <td>{{ category.items.count }} items</td>
-                    <td style="text-align: right; display: flex; justify-content: flex-end; gap: 10px;">
+                    <td data-label="Category Name"><strong>{{ category.name }}</strong></td>
+                    <td data-label="Number of Items">{{ category.items.count }} items</td>
+                    <td class="actions-cell" style="text-align: right; display: flex; justify-content: flex-end; gap: 10px;">
                         <a href="{% url 'category_edit' category.pk %}" class="btn btn-secondary"
                             style="padding: 6px 12px; font-size: 0.8rem;">
                             <i class="fa-solid fa-pen"></i> Edit

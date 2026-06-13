@@ -611,3 +611,140 @@ tr:hover td {
     max-width: 400px;
     margin: 50px auto;
 }
+
+/* Responsive adjustments for Mobile Users (Staff & Public) */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+    
+    /* Admin Navbar responsive stack */
+    .admin-navbar {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px 10px;
+        text-align: center;
+    }
+    
+    .admin-nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    /* Panel responsiveness */
+    .panel {
+        padding: 15px;
+        border-radius: var(--border-radius-sm);
+    }
+    
+    .panel-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .panel-header h2 {
+        font-size: 1.4rem;
+    }
+    
+    /* Transform tables into cards */
+    .table-responsive {
+        border: none;
+    }
+    
+    table {
+        display: block;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 12px;
+    }
+    
+    table thead {
+        display: none; /* Hide column headers */
+    }
+    
+    table tbody, table tr {
+        display: block;
+        width: 100%;
+    }
+    
+    table tr {
+        background-color: var(--white);
+        border: 1px solid rgba(92, 62, 53, 0.1);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--card-shadow);
+        margin-bottom: 15px;
+        padding: 12px;
+    }
+    
+    table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 6px;
+        border-bottom: 1px solid rgba(92, 62, 53, 0.05);
+        text-align: left !important;
+    }
+    
+    table td:last-child,
+    table td.actions-cell {
+        border-bottom: none;
+        padding-top: 12px;
+        margin-top: 6px;
+        justify-content: center;
+        gap: 10px;
+        height: auto !important;
+    }
+    
+    /* Add labels on mobile */
+    table td[data-label]::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Special alignment for image cell */
+    table td[data-label="Image"] {
+        justify-content: center;
+        padding-bottom: 12px;
+        margin-bottom: 6px;
+    }
+    
+    table td[data-label="Image"]::before {
+        display: none;
+    }
+    
+    /* Dashboard responsiveness */
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    /* Form inputs and buttons full-width */
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .panel-header .btn,
+    .form-group + button,
+    .panel form .btn {
+        width: 100%;
+        text-align: center;
+        padding: 12px 20px;
+    }
+    
+    /* Quick action buttons block */
+    div[style*="display: flex"] {
+        flex-direction: column !important;
+    }
+    
+    .contact-actions {
+        grid-template-columns: 1fr;
+    }
+}
+

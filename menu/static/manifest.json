@@ -1,0 +1,24 @@
+{
+  "name": "Majeedinte Chayakkada (Ungungal)",
+  "short_name": "Majeedinte",
+  "description": "Majeedinte Chayakkada (Ungungal) QR Digital Menu System",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#5c3e35",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/static/images/logo_192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/images/logo_512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}

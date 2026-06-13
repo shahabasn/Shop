@@ -38,7 +38,7 @@
             <tbody>
                 {% for item in items %}
                 <tr>
-                    <td>
+                    <td data-label="Image">
                         {% if item.image %}
                             <img src="{{ item.image.url }}" alt="{{ item.name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
                         {% else %}
@@ -47,17 +47,17 @@
                             </div>
                         {% endif %}
                     </td>
-                    <td><strong>{{ item.name }}</strong></td>
-                    <td><span class="category-tab" style="padding: 4px 10px; font-size: 0.8rem; cursor: default;">{{ item.category.name }}</span></td>
-                    <td><strong>${{ item.price }}</strong></td>
-                    <td>
+                    <td data-label="Item Name"><strong>{{ item.name }}</strong></td>
+                    <td data-label="Category"><span class="category-tab" style="padding: 4px 10px; font-size: 0.8rem; cursor: default;">{{ item.category.name }}</span></td>
+                    <td data-label="Price"><strong>${{ item.price }}</strong></td>
+                    <td data-label="Status">
                         {% if item.is_available %}
                             <span style="color: var(--green-accent); font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Available</span>
                         {% else %}
                             <span style="color: #e53e3e; font-weight: 600;"><i class="fa-solid fa-circle-xmark"></i> Unavailable</span>
                         {% endif %}
                     </td>
-                    <td style="text-align: right; display: flex; justify-content: flex-end; gap: 10px; align-items: center; height: 70px;">
+                    <td class="actions-cell" style="text-align: right; display: flex; justify-content: flex-end; gap: 10px; align-items: center; height: 70px;">
                         <a href="{% url 'item_edit' item.pk %}" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">
                             <i class="fa-solid fa-pen"></i> Edit
                         </a>
