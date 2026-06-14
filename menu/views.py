@@ -4,7 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.db.models import Q
-from .models import Category, MenuItem, ShopSetting
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+from .models import Category, MenuItem, ShopSetting, MenuView
 from .forms import CategoryForm, MenuItemForm, ShopSettingForm
 
 # Public Menu View
@@ -185,3 +188,38 @@ def settings_edit(request):
     else:
         form = ShopSettingForm(instance=settings)
     return render(request, 'menu/settings_form.html', {'form': form})
+
+
+@csrf_exempt
+def record_view(request):
+    if request.method == 'POST':
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0].strip()
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        
+        user_agent = request.META.get('HTTP_USER_AGENT', '')
+        
+        MenuView.objects.create(ip_address=ip, user_agent=user_agent)
+        return JsonResponse({'status': 'success', 'message': 'View recorded'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=400)
+
+
+@login_required
+def view_stats_api(request):
+    now = timezone.now()
+    # Handle localized start of day and start of month
+    today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    
+    total_views = MenuView.objects.count()
+    today_views = MenuView.objects.filter(viewed_at__gte=today_start).count()
+    month_views = MenuView.objects.filter(viewed_at__gte=month_start).count()
+    
+    return JsonResponse({
+        'total_views': total_views,
+        'today_views': today_views,
+        'month_views': month_views
+    })
+

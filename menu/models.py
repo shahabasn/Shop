@@ -33,3 +33,11 @@ class ShopSetting(models.Model):
     def __str__(self):
         return self.shop_name
 
+
+class MenuView(models.Model):
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.TextField(null=True, blank=True)
+    viewed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"View from {self.ip_address} at {self.viewed_at}"

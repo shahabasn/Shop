@@ -42,6 +42,50 @@
         </div>
     </div>
 
+    <!-- Views Stats Grid -->
+    <h3 style="margin-top: 30px; margin-bottom: 15px;"><i class="fa-solid fa-chart-line"></i> Menu Views Statistics</h3>
+    <div class="dashboard-grid" id="views-stats-grid">
+        <div class="dashboard-card" style="border-bottom-color: #4285f4;">
+            <div class="dashboard-number" id="total-views-count" style="color: #4285f4;">Loading...</div>
+            <div class="dashboard-label">Total Views</div>
+        </div>
+        <div class="dashboard-card success" style="border-bottom-color: #25d366;">
+            <div class="dashboard-number" id="today-views-count" style="color: #25d366;">Loading...</div>
+            <div class="dashboard-label">Today's Views</div>
+        </div>
+        <div class="dashboard-card warning" style="border-bottom-color: #fbc02d;">
+            <div class="dashboard-number" id="month-views-count" style="color: #fbc02d;">Loading...</div>
+            <div class="dashboard-label">This Month</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const totalEl = document.getElementById("total-views-count");
+            const todayEl = document.getElementById("today-views-count");
+            const monthEl = document.getElementById("month-views-count");
+
+            fetch("{% url 'view_stats_api' %}")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    totalEl.textContent = data.total_views;
+                    todayEl.textContent = data.today_views;
+                    monthEl.textContent = data.month_views;
+                })
+                .catch(error => {
+                    console.error("Error fetching view stats:", error);
+                    totalEl.textContent = "Error";
+                    todayEl.textContent = "Error";
+                    monthEl.textContent = "Error";
+                });
+        });
+    </script>
+
     <!-- Quick Actions Panel -->
     <div style="margin-top: 30px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 25px;">
         <h3>Quick Actions</h3>
