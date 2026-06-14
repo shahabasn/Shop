@@ -49,7 +49,7 @@
                     </td>
                     <td data-label="Item Name"><strong>{{ item.name }}</strong></td>
                     <td data-label="Category"><span class="category-tab" style="padding: 4px 10px; font-size: 0.8rem; cursor: default;">{{ item.category.name }}</span></td>
-                    <td data-label="Price"><strong>${{ item.price }}</strong></td>
+                    <td data-label="Price"><strong>₹{{ item.price }}</strong></td>
                     <td data-label="Status">
                         {% if item.is_available %}
                             <span style="color: var(--green-accent); font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Available</span>
