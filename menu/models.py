@@ -16,7 +16,14 @@ class MenuItem(models.Model):
     image = models.ImageField(upload_to='menu_items/', blank=True, null=True)
     description = models.TextField(blank=True)
     is_available = models.BooleanField(default=True)
+    position = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.id and self.position == 0:
+            max_pos = MenuItem.objects.filter(category=self.category).aggregate(models.Max('position'))['position__max']
+            self.position = (max_pos or 0) + 1
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

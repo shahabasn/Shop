@@ -24,6 +24,9 @@ urlpatterns = [
     path('dashboard/items/add/', views.item_add, name='item_add'),
     path('dashboard/items/<int:pk>/edit/', views.item_edit, name='item_edit'),
     path('dashboard/items/<int:pk>/delete/', views.item_delete, name='item_delete'),
+    path('dashboard/items/<int:pk>/move-up/', views.item_move_up, name='item_move_up'),
+    path('dashboard/items/<int:pk>/move-down/', views.item_move_down, name='item_move_down'),
+    path('dashboard/items/reorder/', views.update_items_order, name='update_items_order'),
     
     # API endpoints
     path('api/views/record/', views.record_view, name='record_view'),

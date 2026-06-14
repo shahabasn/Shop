@@ -29,7 +29,7 @@ def menu_public(request):
     search_query = request.GET.get('search', '').strip()
     category_id = request.GET.get('category', '').strip()
     
-    items = MenuItem.objects.all()
+    items = MenuItem.objects.all().order_by('category', 'position')
     
     if search_query:
         items = items.filter(Q(name__icontains=search_query) | Q(description__icontains=search_query))
@@ -135,7 +135,7 @@ def category_delete(request, pk):
 # Manage Menu Items
 @login_required
 def item_list(request):
-    items = MenuItem.objects.all().order_by('category', 'name')
+    items = MenuItem.objects.all().order_by('category', 'position')
     return render(request, 'menu/item_list.html', {'items': items})
 
 @login_required
@@ -222,4 +222,69 @@ def view_stats_api(request):
         'today_views': today_views,
         'month_views': month_views
     })
+
+
+def ensure_positions_sequenced(category):
+    items = list(MenuItem.objects.filter(category=category).order_by('position', 'id'))
+    for idx, item in enumerate(items, start=1):
+        if item.position != idx:
+            MenuItem.objects.filter(pk=item.pk).update(position=idx)
+
+
+@login_required
+def item_move_up(request, pk):
+    item = get_object_or_404(MenuItem, pk=pk)
+    ensure_positions_sequenced(item.category)
+    item.refresh_from_db()
+    
+    previous_item = MenuItem.objects.filter(
+        category=item.category,
+        position__lt=item.position
+    ).order_by('-position').first()
+    
+    if previous_item:
+        MenuItem.objects.filter(pk=item.pk).update(position=previous_item.position)
+        MenuItem.objects.filter(pk=previous_item.pk).update(position=item.position)
+        messages.success(request, f"Moved '{item.name}' up.")
+    else:
+        messages.info(request, f"'{item.name}' is already at the top.")
+        
+    return redirect('item_list')
+
+
+@login_required
+def item_move_down(request, pk):
+    item = get_object_or_404(MenuItem, pk=pk)
+    ensure_positions_sequenced(item.category)
+    item.refresh_from_db()
+    
+    next_item = MenuItem.objects.filter(
+        category=item.category,
+        position__gt=item.position
+    ).order_by('position').first()
+    
+    if next_item:
+        MenuItem.objects.filter(pk=item.pk).update(position=next_item.position)
+        MenuItem.objects.filter(pk=next_item.pk).update(position=item.position)
+        messages.success(request, f"Moved '{item.name}' down.")
+    else:
+        messages.info(request, f"'{item.name}' is already at the bottom.")
+        
+    return redirect('item_list')
+
+
+@csrf_exempt
+@login_required
+def update_items_order(request):
+    if request.method == 'POST':
+        import json
+        try:
+            data = json.loads(request.body)
+            item_ids = data.get('item_ids', [])
+            for idx, item_id in enumerate(item_ids, start=1):
+                MenuItem.objects.filter(pk=item_id).update(position=idx)
+            return JsonResponse({'status': 'success', 'message': 'Ordering updated successfully.'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid method.'}, status=400)
 

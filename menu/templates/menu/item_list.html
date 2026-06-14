@@ -27,6 +27,7 @@
         <table>
             <thead>
                 <tr>
+                    <th style="width: 50px; text-align: center;">Sort</th>
                     <th>Image</th>
                     <th>Item Name</th>
                     <th>Category</th>
@@ -37,7 +38,10 @@
             </thead>
             <tbody>
                 {% for item in items %}
-                <tr>
+                <tr data-id="{{ item.pk }}">
+                    <td data-label="Sort" style="text-align: center; justify-content: center;">
+                        <div class="drag-handle"><i class="fa-solid fa-grip-vertical"></i></div>
+                    </td>
                     <td data-label="Image">
                         {% if item.image %}
                             <img src="{{ item.image.url }}" alt="{{ item.name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
@@ -58,6 +62,8 @@
                         {% endif %}
                     </td>
                     <td class="actions-cell" style="text-align: right; display: flex; justify-content: flex-end; gap: 10px; align-items: center; height: 70px;">
+                        <a href="{% url 'item_move_up' item.pk %}" class="btn-move" title="Move Up"><i class="fa-solid fa-chevron-up"></i></a>
+                        <a href="{% url 'item_move_down' item.pk %}" class="btn-move" title="Move Down"><i class="fa-solid fa-chevron-down"></i></a>
                         <a href="{% url 'item_edit' item.pk %}" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">
                             <i class="fa-solid fa-pen"></i> Edit
                         </a>
@@ -77,4 +83,47 @@
     </div>
     {% endif %}
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var el = document.querySelector('table tbody');
+        if (el) {
+            var sortable = Sortable.create(el, {
+                handle: '.drag-handle',
+                ghostClass: 'sortable-ghost',
+                chosenClass: 'sortable-chosen',
+                animation: 150,
+                onEnd: function (evt) {
+                    var itemIds = [];
+                    el.querySelectorAll('tr').forEach(function(row) {
+                        var id = row.getAttribute('data-id');
+                        if (id) {
+                            itemIds.push(id);
+                        }
+                    });
+                    
+                    fetch("{% url 'update_items_order' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ item_ids: itemIds })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status !== 'success') {
+                            alert('Failed to update order: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while saving the new order.');
+                    });
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}
