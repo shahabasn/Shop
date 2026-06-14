@@ -823,6 +823,13 @@ body.dark-theme .category-tab {
     border-color: rgba(251, 192, 45, 0.15);
 }
 
+body.dark-theme .category-tab.active {
+    background-color: var(--accent-color);
+    color: #120e0d;
+    border-color: var(--accent-color);
+    box-shadow: 0 6px 20px rgba(251, 192, 45, 0.25);
+}
+
 body.dark-theme .search-input {
     background-color: rgba(28, 21, 20, 0.75);
     border-color: rgba(251, 192, 45, 0.15);
