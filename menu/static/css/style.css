@@ -87,7 +87,7 @@ h1, h2, h3, h4 {
 
 .search-input {
     width: 100%;
-    padding: 16px 20px 16px 50px;
+    padding: 16px 100px 16px 50px; /* Increased right padding to prevent text overlay behind the search button */
     font-family: 'Outfit', sans-serif;
     font-size: 1rem;
     border: 1px solid rgba(251, 192, 45, 0.2);
@@ -112,6 +112,29 @@ h1, h2, h3, h4 {
     transform: translateY(-50%);
     color: var(--text-muted);
     font-size: 1.2rem;
+}
+
+.search-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--accent-color);
+    color: var(--white);
+    border: 1px solid rgba(251, 192, 45, 0.25);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.search-btn:hover {
+    background-color: var(--accent-light);
+    transform: translateY(-50%) scale(1.03);
+    box-shadow: 0 4px 12px rgba(251, 192, 45, 0.15);
 }
 
 /* Category Filter Tabs */
@@ -627,6 +650,18 @@ tr:hover td {
 @media (max-width: 600px) {
     .container {
         padding: 10px;
+    }
+    
+    .search-input {
+        padding: 14px 80px 14px 45px;
+        font-size: 0.9rem;
+    }
+    
+    .search-btn {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        right: 6px;
+        border-radius: 8px;
     }
     
     /* Admin Navbar responsive stack */
