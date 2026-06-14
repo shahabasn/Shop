@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from datetime import time
 from .models import Category, MenuItem, ShopSetting, MenuView
 from .forms import CategoryForm, MenuItemForm, ShopSettingForm
 
@@ -16,11 +17,13 @@ def menu_public(request):
     settings = ShopSetting.objects.first()
     if not settings:
         settings = ShopSetting.objects.create(
-            shop_name="Steaming Mug Cafe & Stationery",
-            phone_number="+1 234 567 890",
-            whatsapp_number="+1 234 567 890",
-            google_map_link="https://maps.google.com",
-            address="123 Main Road, Townsite"
+            shop_name="മജീദിന്റെ ചായക്കട",
+            phone_number="+91 8606756275",
+            whatsapp_number="918606756275",
+            google_map_link="https://maps.app.goo.gl/FkH6xP5m4bSdfG2",
+            address="Majeedinte Chayakkada, Near Najath HSS School Peruvallur",
+            opening_time=time(4, 30),
+            closing_time=time(21, 0)
         )
     
     categories = Category.objects.all()

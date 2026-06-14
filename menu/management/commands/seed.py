@@ -18,13 +18,13 @@ class Command(BaseCommand):
 
         # 2. Setup Shop Settings
         settings, created = ShopSetting.objects.get_or_create(id=1)
-        settings.shop_name = "Majeedinte Chayakkada (Ungungal)"
-        settings.phone_number = "+91 98765 43210"
-        settings.whatsapp_number = "919876543210"  # WhatsApp link format without + or spaces
+        settings.shop_name = "മജീദിന്റെ ചായക്കട"
+        settings.phone_number = "+91 8606756275"
+        settings.whatsapp_number = "918606756275"  # WhatsApp link format without + or spaces
         settings.google_map_link = "https://maps.app.goo.gl/FkH6xP5m4bSdfG2"
-        settings.opening_time = time(7, 30)
-        settings.closing_time = time(21, 30)
-        settings.address = "Steaming Mug Corner, Near Central Library, Town Junction"
+        settings.opening_time = time(4, 30)
+        settings.closing_time = time(21, 0)
+        settings.address = "Majeedinte Chayakkada, Near Najath HSS School Peruvallur"
         settings.save()
         self.stdout.write(self.style.SUCCESS("Shop settings initialized."))
 
