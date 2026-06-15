@@ -971,11 +971,10 @@ body.dark-theme .empty-state {
 }
 
 .nav-logo {
-    height: 38px;
-    width: 38px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid rgba(251, 192, 45, 0.4);
+    height: 40px;
+    width: auto;
+    border-radius: 6px;
+    object-fit: contain;
 }
 
 .nav-brand-name {

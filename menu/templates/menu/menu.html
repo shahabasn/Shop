@@ -7,8 +7,7 @@
 <!-- Sticky Responsive Navbar -->
 <nav class="public-navbar">
     <div class="nav-logo-brand">
-        <img src="{% static 'images/logo_192.png' %}" alt="Logo" class="nav-logo">
-        <span class="nav-brand-name">{{ settings.shop_name }}</span>
+        <img src="{% static 'images/logo.jpg' %}" alt="Logo" class="nav-logo">
     </div>
     
     <!-- Mobile Hamburger Menu Button -->
@@ -33,16 +32,12 @@
             {% for slider in slider_images %}
                 <div class="slider-slide {% if forloop.first %}active{% endif %}">
                     <img src="{{ slider.image.url }}" alt="{{ slider.title|default:settings.shop_name }}">
-                    {% if slider.title %}
-                        <div class="slide-caption">{{ slider.title }}</div>
-                    {% endif %}
                 </div>
             {% endfor %}
         {% else %}
             <!-- Default Banner -->
             <div class="slider-slide active">
                 <img src="{% static 'images/shop_bg.jpg' %}" alt="Default Banner">
-                <div class="slide-caption">Welcome to {{ settings.shop_name }}</div>
             </div>
         {% endif %}
     </div>
