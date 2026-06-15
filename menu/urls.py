@@ -28,6 +28,10 @@ urlpatterns = [
     path('dashboard/items/<int:pk>/move-down/', views.item_move_down, name='item_move_down'),
     path('dashboard/items/reorder/', views.update_items_order, name='update_items_order'),
     
+    # Slider Images CRUD
+    path('dashboard/sliders/', views.slider_list, name='slider_list'),
+    path('dashboard/sliders/<int:pk>/delete/', views.slider_delete, name='slider_delete'),
+    
     # API endpoints
     path('api/views/record/', views.record_view, name='record_view'),
     path('api/views/stats/', views.view_stats_api, name='view_stats_api'),

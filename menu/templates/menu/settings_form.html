@@ -9,6 +9,7 @@
         <a href="{% url 'dashboard' %}">Dashboard</a>
         <a href="{% url 'category_list' %}">Categories</a>
         <a href="{% url 'item_list' %}">Menu Items</a>
+        <a href="{% url 'slider_list' %}">Sliders</a>
         <a href="{% url 'settings_edit' %}" style="font-weight: bold; border-bottom: 2px solid white; padding-bottom: 3px;">Settings</a>
         <a href="{% url 'logout' %}" onclick="return confirm('Do you want to logout now?');" style="color: #ffcccc;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>
@@ -42,5 +43,13 @@
             <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
+
+    <div style="margin-top: 40px; border-top: 1px solid rgba(92, 62, 53, 0.1); padding-top: 25px;">
+        <h3>Shop Hero Slider Images</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Upload, preview, and manage slider/banner images displayed on the public home page.</p>
+        <a href="{% url 'slider_list' %}" class="btn btn-secondary">
+            <i class="fa-solid fa-images"></i> Manage Slider Images
+        </a>
+    </div>
 </div>
 {% endblock %}

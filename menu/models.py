@@ -48,3 +48,14 @@ class MenuView(models.Model):
 
     def __str__(self):
         return f"View from {self.ip_address} at {self.viewed_at}"
+
+
+class SliderImage(models.Model):
+    image = models.ImageField(upload_to='slider_images/')
+    title = models.CharField(max_length=150, blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title or f"Slider Image {self.id}"
+

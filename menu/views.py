@@ -8,8 +8,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from datetime import time
-from .models import Category, MenuItem, ShopSetting, MenuView
-from .forms import CategoryForm, MenuItemForm, ShopSettingForm
+from .models import Category, MenuItem, ShopSetting, MenuView, SliderImage
+from .forms import CategoryForm, MenuItemForm, ShopSettingForm, SliderImageForm
 
 # Public Menu View
 def menu_public(request):
@@ -27,6 +27,7 @@ def menu_public(request):
         )
     
     categories = Category.objects.all()
+    slider_images = SliderImage.objects.filter(is_active=True).order_by('-created_at')
     
     # Query parameters
     search_query = request.GET.get('search', '').strip()
@@ -44,6 +45,7 @@ def menu_public(request):
         'settings': settings,
         'categories': categories,
         'items': items,
+        'slider_images': slider_images,
         'search_query': search_query,
         'selected_category_id': int(category_id) if category_id.isdigit() else None
     }
@@ -290,4 +292,28 @@ def update_items_order(request):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Invalid method.'}, status=400)
+
+
+@login_required
+def slider_list(request):
+    sliders = SliderImage.objects.all().order_by('-created_at')
+    if request.method == 'POST':
+        form = SliderImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Slider image added successfully.")
+            return redirect('slider_list')
+    else:
+        form = SliderImageForm()
+    return render(request, 'menu/slider_list.html', {'sliders': sliders, 'form': form})
+
+
+@login_required
+def slider_delete(request, pk):
+    slider = get_object_or_404(SliderImage, pk=pk)
+    if request.method == 'POST':
+        slider.delete()
+        messages.success(request, "Slider image deleted successfully.")
+    return redirect('slider_list')
+
 

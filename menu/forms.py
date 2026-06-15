@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, MenuItem, ShopSetting
+from .models import Category, MenuItem, ShopSetting, SliderImage
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -38,3 +38,15 @@ class ShopSettingForm(forms.ModelForm):
             'closing_time': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
             'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Shop Address'}),
         }
+
+
+class SliderImageForm(forms.ModelForm):
+    class Meta:
+        model = SliderImage
+        fields = ['image', 'title', 'is_active']
+        widgets = {
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Optional Title/Caption'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+

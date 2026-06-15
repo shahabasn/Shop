@@ -1,0 +1,89 @@
+{% extends 'menu/base.html' %}
+
+{% block title %}Manage Slider Images | QR Digital Menu{% endblock %}
+
+{% block content %}
+<nav class="admin-navbar">
+    <div class="admin-brand"><i class="fa-solid fa-mug-hot"></i> Shop Admin</div>
+    <div class="admin-nav-links">
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'category_list' %}">Categories</a>
+        <a href="{% url 'item_list' %}">Menu Items</a>
+        <a href="{% url 'slider_list' %}" style="font-weight: bold; border-bottom: 2px solid white; padding-bottom: 3px;">Sliders</a>
+        <a href="{% url 'settings_edit' %}">Settings</a>
+        <a href="{% url 'logout' %}" onclick="return confirm('Do you want to logout now?');" style="color: #ffcccc;">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    </div>
+</nav>
+
+<div class="panel" style="margin-bottom: 30px;">
+    <div class="panel-header">
+        <h2>Upload Slider/Banner Image</h2>
+    </div>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div style="color: #e53e3e; font-size: 0.85rem; margin-top: 5px;">
+                    {{ field.errors|join:", " }}
+                </div>
+            {% endif %}
+            {% if field.help_text %}
+                <small style="color: var(--text-muted); display: block; margin-top: 4px;">{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <div style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Image</button>
+        </div>
+    </form>
+</div>
+
+<div class="panel">
+    <div class="panel-header">
+        <h2>Current Slider Images</h2>
+    </div>
+
+    {% if sliders %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
+        {% for slider in sliders %}
+        <div style="border: 1px solid rgba(251, 192, 45, 0.2); border-radius: var(--border-radius-md); overflow: hidden; background: var(--white); box-shadow: var(--card-shadow); display: flex; flex-direction: column;">
+            <div style="height: 140px; width: 100%; overflow: hidden; background: #eee; position: relative;">
+                <img src="{{ slider.image.url }}" alt="{{ slider.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                {% if not slider.is_active %}
+                <span style="position: absolute; top: 10px; right: 10px; background: rgba(229, 62, 62, 0.9); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Inactive</span>
+                {% else %}
+                <span style="position: absolute; top: 10px; right: 10px; background: rgba(120, 144, 72, 0.9); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Active</span>
+                {% endif %}
+            </div>
+            <div style="padding: 15px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
+                <div style="margin-bottom: 15px;">
+                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 5px; color: var(--text-primary);">{{ slider.title|default:"Untitled Image" }}</h4>
+                    <small style="color: var(--text-muted);">Added: {{ slider.created_at|date:"M d, Y" }}</small>
+                </div>
+                <div>
+                    <form method="POST" action="{% url 'slider_delete' slider.pk %}" onsubmit="return confirm('Are you sure you want to delete this slider image?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" style="width: 100%; padding: 8px 12px; font-size: 0.85rem;">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-emoji">🖼️</div>
+        <p>No slider images uploaded yet. Upload images above to showcase them on the public home page!</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
